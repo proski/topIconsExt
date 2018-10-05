@@ -157,7 +157,14 @@ function createTray() {
 	sysTray = new Shell.TrayManager();
 	sysTray.connect('tray-icon-added', onTrayIconAdded);
 	sysTray.connect('tray-icon-removed', onTrayIconRemoved);
-	sysTray.manage_screen(global.screen, Main.panel.actor);
+	try {
+		// GNOME 3.28
+		sysTray.manage_screen(global.screen, Main.panel.actor);
+	}
+	catch (err) {
+		// GNOME 3.30+
+		sysTray.manage_screen(Main.panel.actor);
+	}
 }
 
 function destroyTray() {
